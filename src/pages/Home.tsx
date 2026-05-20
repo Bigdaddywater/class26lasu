@@ -5,8 +5,8 @@ import { Camera, ChevronRight, Play, Sparkles, GraduationCap, Loader2, Check, Se
 import { memoryService, eventService } from '../lib/api-client';
 import { useAuthStore } from '../stores/authStore';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../services/firebase';
-import { collection, query, where, limit, onSnapshot, orderBy, getDocs } from 'firebase/firestore';
+{/*import { db } from '../services/firebase';
+import { collection, query, where, limit, onSnapshot, orderBy, getDocs } from 'firebase/firestore';*/}
 
 const CATEGORIES = [
   { id: 'graduation', title: 'Graduation Week', count: 124, image: 'https://images.unsplash.com/photo-1523050853064-85a17f009cc3?q=80&w=1000&auto=format&fit=crop' },
