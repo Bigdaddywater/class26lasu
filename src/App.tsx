@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Archive from './pages/Archive';
 import Admin from './pages/Admin';
 import MessagesList from './pages/MessagesList';
+import AuthCallback from './pages/AuthCallback';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { WebSocketProvider } from './hooks/useWebSockets';
@@ -26,6 +27,7 @@ export default function App() {
                 <Route path="/archive" element={<Archive />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/guestbook" element={<MessagesList />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
               </Routes>
             </AnimatePresence>
           </main>
