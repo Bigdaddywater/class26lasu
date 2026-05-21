@@ -7,13 +7,20 @@ from app.api.v1.api import api_router
 from app.core.config import settings
 from app.database.session import engine, Base
 
-# Create tables
-Base.metadata.create_all(bind=engine)
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Create tables
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
 
 app = FastAPI(
     title="LASU 2026 Digital Archive API",
     description="Enterprise-grade backend for the Echelontix ecosystem",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # Set up CORS
