@@ -82,6 +82,7 @@ packages = [
     "psycopg2-binary"
     "psycopg2"
     "psycopg-pool"
+    "passlib[bcrypt]"
 ]
 
 def install(package):
