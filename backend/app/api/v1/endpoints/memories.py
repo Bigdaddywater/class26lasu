@@ -25,14 +25,18 @@ async def read_memories(
 
 import cloudinary.uploader
 
+from fastapi import Form
+
 @router.post("/upload", response_model=schemas.Memory)
 async def upload_memory(
     *,
     db: AsyncSession = Depends(session.get_db),
     file: UploadFile = File(...),
-    title: str = None,
-    caption: str = None,
-    faculty: str = None
+    title: str = Form(None),
+    description: str = Form(None),
+    faculty: str = Form(None),
+    tags: str = Form(None),
+    people: str = Form(None)
 ) -> Any:
     import cloudinary.exceptions
     
@@ -47,12 +51,13 @@ async def upload_memory(
     
     memory = models.Memory(
         title=title,
-        description=caption,
+        description=description,
         media_url=media_url,
         media_type=media_type,
         faculty=faculty,
+        tags=tags,
         uploader_id=1, # Get from current user in token
-        approved=False
+        approved=True # Auto-approve for now so they show up immediately
     )
     db.add(memory)
     await db.commit()
