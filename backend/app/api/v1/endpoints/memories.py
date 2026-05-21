@@ -1,6 +1,7 @@
 from typing import Any, List
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 from app.database import session
 from app.models import models
 from app.schemas import memory as schemas
@@ -9,21 +10,23 @@ from app.core.config import settings
 router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Memory])
-def read_memories(
-    db: Session = Depends(session.get_db),
+async def read_memories(
+    db: AsyncSession = Depends(session.get_db),
     skip: int = 0,
     limit: int = 100,
     faculty: str = None
 ) -> Any:
-    query = db.query(models.Memory).filter(models.Memory.approved == True)
+    stmt = select(models.Memory).filter(models.Memory.approved == True)
     if faculty:
-        query = query.filter(models.Memory.faculty == faculty)
-    return query.offset(skip).limit(limit).all()
+        stmt = stmt.filter(models.Memory.faculty == faculty)
+    stmt = stmt.offset(skip).limit(limit)
+    result = await db.execute(stmt)
+    return result.scalars().all()
 
 @router.post("/upload", response_model=schemas.Memory)
 async def upload_memory(
     *,
-    db: Session = Depends(session.get_db),
+    db: AsyncSession = Depends(session.get_db),
     file: UploadFile = File(...),
     title: str = None,
     caption: str = None,
@@ -43,6 +46,6 @@ async def upload_memory(
         approved=False
     )
     db.add(memory)
-    db.commit()
-    db.refresh(memory)
+    await db.commit()
+    await db.refresh(memory)
     return memory
