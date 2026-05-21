@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     USE_SQLITE: bool = os.getenv("USE_SQLITE", "True").lower() in ("true", "1", "t")
 
     # Database
+    DATABASE_URL: str | None = os.getenv("DATABASE_URL")
     POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "localhost")
     POSTGRES_USER: str = os.getenv("POSTGRES_USER", "postgres")
     POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "password")
@@ -18,6 +19,10 @@ class Settings(BaseSettings):
 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
+        if self.DATABASE_URL:
+            if self.DATABASE_URL.startswith("postgres://"):
+                return self.DATABASE_URL.replace("postgres://", "postgresql://", 1)
+            return self.DATABASE_URL
         if self.USE_SQLITE:
             return "sqlite:///./sqlite_cache.db"
         return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}/{self.POSTGRES_DB}"
@@ -33,5 +38,6 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = True
+        env_file = ".env"
 
 settings = Settings()

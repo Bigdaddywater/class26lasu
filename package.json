@@ -2,16 +2,41 @@
   "name": "class26lasu",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.15",
     "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "axios": "^1.16.1",
+    "browser-image-compression": "^2.0.2",
+    "clsx": "^2.1.1",
+    "firebase": "^12.13.0",
+    "framer-motion": "^12.39.0",
+    "fuse.js": "^7.3.0",
     "lucide-react": "^1.16.0",
-    "react-router-dom": "^7.15.1"
+    "motion": "^12.39.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7.15.1",
+    "recharts": "^3.8.1",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.0",
+    "zustand": "^5.0.13"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^19.2.3",
+    "vite": "^6.4.2"
   }
 }
