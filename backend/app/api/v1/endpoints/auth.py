@@ -73,3 +73,74 @@ async def login(
         "access_token": security.create_access_token(user.id),
         "token_type": "bearer",
     }
+
+import httpx
+from fastapi.responses import RedirectResponse
+
+@router.get("/google/url")
+async def get_google_url():
+    url = f"https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id={settings.GOOGLE_CLIENT_ID}&redirect_uri={settings.GOOGLE_REDIRECT_URI}&scope=openid%20email%20profile&access_type=offline"
+    return {"url": url}
+
+@router.get("/google/callback")
+async def google_callback(
+    code: str,
+    db: AsyncSession = Depends(session.get_db)
+):
+    token_url = "https://oauth2.googleapis.com/token"
+    data = {
+        "code": code,
+        "client_id": settings.GOOGLE_CLIENT_ID,
+        "client_secret": settings.GOOGLE_CLIENT_SECRET,
+        "redirect_uri": settings.GOOGLE_REDIRECT_URI,
+        "grant_type": "authorization_code",
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.post(token_url, data=data)
+        token_data = response.json()
+        access_token = token_data.get("access_token")
+        
+        if not access_token:
+            raise HTTPException(status_code=400, detail="Failed to retrieve Google token")
+            
+        user_info = await client.get(
+            "https://www.googleapis.com/oauth2/v1/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"}
+        )
+        user_data = user_info.json()
+        
+    email = user_data.get("email")
+    if not email:
+        raise HTTPException(status_code=400, detail="Could not retrieve email from Google")
+        
+    stmt = select(models.User).filter(models.User.email == email)
+    result = await db.execute(stmt)
+    user = result.scalars().first()
+    
+    admin_emails = [e.strip() for e in settings.GOOGLE_ADMIN_EMAILS.split(",") if e.strip()]
+    is_admin = email in admin_emails
+    
+    if not user:
+        user = models.User(
+            email=email,
+            username=email.split("@")[0] + str(hash(email))[:4], # Ensure uniqueness
+            full_name=user_data.get("name", "Google User"),
+            password_hash=security.get_password_hash(email),
+            profile_picture=user_data.get("picture"),
+            role="admin" if is_admin else "student",
+            verified=True
+        )
+        db.add(user)
+    else:
+        if is_admin and user.role != "admin":
+            user.role = "admin"
+        if not user.profile_picture:
+            user.profile_picture = user_data.get("picture")
+            
+    await db.commit()
+    await db.refresh(user)
+    
+    jwt_token = security.create_access_token(user.id)
+    
+    redirect_url = f"{settings.FRONTEND_URL}/auth/callback?token={jwt_token}"
+    return RedirectResponse(url=redirect_url)
