@@ -34,10 +34,16 @@ async def upload_memory(
     caption: str = None,
     faculty: str = None
 ) -> Any:
-    # Upload to Cloudinary
-    result = cloudinary.uploader.upload(file.file, folder="lasu2026", resource_type="auto")
-    media_url = result.get("secure_url")
-    media_type = "video" if file.content_type and file.content_type.startswith("video") else "image"
+    import cloudinary.exceptions
+    
+    try:
+        # Upload to Cloudinary using the raw file bytes
+        contents = await file.read()
+        result = cloudinary.uploader.upload(contents, folder="lasu2026", resource_type="auto")
+        media_url = result.get("secure_url")
+        media_type = "video" if file.content_type and file.content_type.startswith("video") else "image"
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Cloudinary upload failed: {str(e)}")
     
     memory = models.Memory(
         title=title,
