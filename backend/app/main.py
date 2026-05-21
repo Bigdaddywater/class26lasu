@@ -7,6 +7,14 @@ from app.api.v1.api import api_router
 from app.core.config import settings
 from app.database.session import engine, Base
 
+import cloudinary
+
+cloudinary.config(
+    cloud_name=settings.CLOUDINARY_CLOUD_NAME,
+    api_key=settings.CLOUDINARY_API_KEY,
+    api_secret=settings.CLOUDINARY_API_SECRET
+)
+
 from contextlib import asynccontextmanager
 
 @asynccontextmanager

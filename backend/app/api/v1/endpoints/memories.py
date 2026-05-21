@@ -23,6 +23,8 @@ async def read_memories(
     result = await db.execute(stmt)
     return result.scalars().all()
 
+import cloudinary.uploader
+
 @router.post("/upload", response_model=schemas.Memory)
 async def upload_memory(
     *,
@@ -32,15 +34,16 @@ async def upload_memory(
     caption: str = None,
     faculty: str = None
 ) -> Any:
-    # Logic for Cloudinary upload would go here
-    # For now, simulate media_url
-    media_url = f"https://cdn.lasu2026.com/uploads/{file.filename}"
+    # Upload to Cloudinary
+    result = cloudinary.uploader.upload(file.file, folder="lasu2026", resource_type="auto")
+    media_url = result.get("secure_url")
+    media_type = "video" if file.content_type and file.content_type.startswith("video") else "image"
     
     memory = models.Memory(
         title=title,
         description=caption,
         media_url=media_url,
-        media_type="image", # Detect from file content type normally
+        media_type=media_type,
         faculty=faculty,
         uploader_id=1, # Get from current user in token
         approved=False

@@ -50,25 +50,23 @@ async def register(
     await db.refresh(user)
     return user
 
-from fastapi.security import OAuth2PasswordRequestForm
-
 @router.post("/login", response_model=user_schemas.Token)
 async def login(
     *,
     db: AsyncSession = Depends(session.get_db),
-    form_data: OAuth2PasswordRequestForm = Depends()
+    user_in: user_schemas.UserLogin
 ) -> Any:
-    stmt = select(models.User).filter(models.User.username == form_data.username)
+    stmt = select(models.User).filter(models.User.username == user_in.username)
     result = await db.execute(stmt)
     user = result.scalars().first()
     
     if not user:
         # Check by email as a fallback
-        stmt_email = select(models.User).filter(models.User.email == form_data.username)
+        stmt_email = select(models.User).filter(models.User.email == user_in.username)
         result_email = await db.execute(stmt_email)
         user = result_email.scalars().first()
         
-    if not user or not security.verify_password(form_data.password, user.password_hash):
+    if not user or not security.verify_password(user_in.password, user.password_hash):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
         
     return {
