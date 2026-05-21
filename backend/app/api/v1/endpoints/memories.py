@@ -9,7 +9,7 @@ from app.core.config import settings
 
 router = APIRouter()
 
-@router.get("/", response_model=List[schemas.Memory])
+@router.get("", response_model=List[schemas.Memory])
 async def read_memories(
     db: AsyncSession = Depends(session.get_db),
     skip: int = 0,
