@@ -78,7 +78,10 @@ packages = [
     "openai==1.3.7",
     "google-generativeai==0.3.2",
     "asyncpg==0.29.0",
-    "sqlmodel==0.0.14"
+    "sqlmodel==0.0.14",
+    "psycopg2-binary"
+    "psycopg2"
+    "psycopg-pool"
 ]
 
 def install(package):
