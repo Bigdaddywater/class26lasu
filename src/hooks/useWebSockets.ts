@@ -1,15 +1,10 @@
 import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 
-// DYNAMIC WEBSOCKET CONNECTION CALCULATOR
 const getWsUrl = () => {
   if (import.meta.env.VITE_WS_URL) {
     return import.meta.env.VITE_WS_URL;
   }
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws';
-  if (window.location.host.includes('localhost')) {
-    return 'ws://localhost:3000/ws';
-  }
-  return `${protocol}//${window.location.host}/ws`;
+  return 'wss://class26lasu.onrender.com/ws';
 };
 
 const MAX_RECONNECT_ATTEMPTS = 10;
