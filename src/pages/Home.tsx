@@ -9,13 +9,14 @@ import { useNavigate } from 'react-router-dom';
 import { collection, query, where, limit, onSnapshot, orderBy, getDocs } from 'firebase/firestore';*/}
 
 const CATEGORIES = [
-  { id: 'graduation', title: 'Graduation Week', count: 124, image: 'https://images.unsplash.com/photo-1523050853064-85a17f009cc3?q=80&w=1000&auto=format&fit=crop' },
-  { id: 'faculty', title: 'Faculty Archives', count: 450, image: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1000&auto=format&fit=crop' },
-  { id: 'nightlife', title: 'NO MORE CGPA', count: 320, image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000&auto=format&fit=crop' },
-  { id: 'lifestyle', title: 'Echelontix Culture', count: 890, image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=1000&auto=format&fit=crop' },
+  { id: 'graduation', title: 'Graduation Week', count: 124, image: 'https://images.unsplash.com/photo-1523050853064-85a17f009cc3?auto=format&fit=crop&w=1200&q=80' },
+  { id: 'faculty', title: 'Faculty Archives', count: 450, image: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&w=1200&q=80' },
+  { id: 'nightlife', title: 'NO MORE CGPA', count: 2, image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80' },
+  { id: 'lifestyle', title: 'Echelontix Culture', count: 890, image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=80' },
 ];
 
-const FALLBACK_HERO = "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=2000&auto=format&fit=crop";
+const FALLBACK_HERO = "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=200&q=80";
+const FALLBACK_CATEGORY_IMAGE = "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=1200&q=80";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -89,6 +90,11 @@ export default function Home() {
               key={slides[currentSlide]}
               src={slides[currentSlide]} 
               alt="Memory Slideshow"
+              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                const target = e.currentTarget;
+                target.onerror = null;
+                target.src = FALLBACK_HERO;
+              }}
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 0.3, scale: 1.05 }}
               exit={{ opacity: 0 }}
@@ -141,7 +147,7 @@ export default function Home() {
               <div className="space-y-6 flex flex-col items-center">
                 <p className="text-[#D4AF37] text-xs font-black uppercase tracking-[0.4em] mb-4">The Legacy</p>
                 <div className="font-serif italic text-lg md:text-xl text-white/50 leading-relaxed space-y-4 text-center">
-                  <p>This gallery is more than photographs. It is a collection of moments that defined an era of our lives—a reminder that we lived and evolved together.</p>
+                  <p>This gallery is more than photographs. It is a collection of moments that defined an era of our lives a reminder that we lived and evolved together.</p>
                   <p>Every face reflects a future still unfolding. The lectures will end, the classrooms will empty, but these memories created here remain timeless.</p>
                   <div className="pt-4 text-center">
                     <p className="text-white text-xl md:text-2xl font-black uppercase tracking-tighter">Welcome to the legacy.</p>
@@ -202,9 +208,16 @@ export default function Home() {
                 className="relative z-10 aspect-[4/5] overflow-hidden"
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1200&auto=format&fit=crop" 
+                  src="https://plain-weur-pro-public.komodecks.com/202605/23/86uYv0cK3Cv0YxGIVvCP/image.jpg?auto=format&fit=crop&w=1200&q=80" 
                   alt="NO MORE CGPA" 
                   className="w-full h-full object-cover transition-transform duration-1000 hover:scale-110"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = FALLBACK_CATEGORY_IMAGE;
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
                 <div className="absolute top-6 left-6 bg-[#D4AF37] text-black px-4 py-1 font-black text-[10px] uppercase tracking-widest shadow-2xl">
@@ -302,6 +315,13 @@ export default function Home() {
                   src={cat.image} 
                   alt={cat.title} 
                   className="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-700"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = FALLBACK_CATEGORY_IMAGE;
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

@@ -788,7 +788,7 @@ export default function Archive() {
     setIsSubmittingComment(true);
     try {
       await memoryService.addComment(selectedMemoryForComments.id, newComment.trim());
-      setMemories(prev => prev.map(m => m.id === selectedMemoryForComments.id ? { ...m, commentsCount: m.comments_count + 1 } : m));
+      setMemories(prev => prev.map(m => m.id === selectedMemoryForComments.id ? { ...m, commentsCount: m.commentsCount + 1 } : m));
       setNewComment('');
       setActiveNotification({ type: 'success', message: "Message added to the legacy." });
     } catch (error) {

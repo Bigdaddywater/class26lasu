@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1A1A" />
+      <stop offset="100%" stop-color="#302F2F" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#grad4)" />
+  <path d="M180 120 Q320 20 460 120 L420 200 Q320 120 220 200 Z" fill="#D4AF37" opacity="0.25" />
+  <text x="320" y="270" text-anchor="middle" fill="#fff" font-family="Inter, sans-serif" font-size="46" font-weight="800">ECHELONTIX</text>
+  <text x="320" y="330" text-anchor="middle" fill="#D4AF37" font-family="Inter, sans-serif" font-size="18" font-weight="700" letter-spacing="0.4em">CULTURE</text>
+</svg>
