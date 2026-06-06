@@ -5,14 +5,18 @@ import { Camera, ChevronRight, Play, Sparkles, GraduationCap, Loader2, Check, Se
 import { memoryService, eventService } from '../lib/api-client';
 import { useAuthStore } from '../stores/authStore';
 import { useNavigate } from 'react-router-dom';
+import graduationImage from '../assets/graduation.svg';
+import facultyImage from '../assets/faculty.svg';
+import noMoreCgpaImage from '../assets/noMoreCgpa.jpg';
+import echelontixImage from '../assets/echelontix.svg';
 {/*import { db } from '../services/firebase';
 import { collection, query, where, limit, onSnapshot, orderBy, getDocs } from 'firebase/firestore';*/}
 
 const CATEGORIES = [
-  { id: 'graduation', title: 'Graduation Week', count: 124, image: 'https://images.unsplash.com/photo-1523050853064-85a17f009cc3?auto=format&fit=crop&w=1200&q=80' },
-  { id: 'faculty', title: 'Faculty Archives', count: 450, image: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&w=1200&q=80' },
-  { id: 'nightlife', title: 'NO MORE CGPA', count: 2, image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80' },
-  { id: 'lifestyle', title: 'Echelontix Culture', count: 890, image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=80' },
+  { id: 'graduation', title: 'Graduation Week', count: 124, image: graduationImage },
+  { id: 'faculty', title: 'Faculty Archives', count: 450, image: facultyImage },
+  { id: 'nightlife', title: 'NO MORE CGPA', count: 2, image: noMoreCgpaImage },
+  { id: 'lifestyle', title: 'Echelontix Culture', count: 890, image: echelontixImage },
 ];
 
 const FALLBACK_HERO = "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=200&q=80";
@@ -208,7 +212,7 @@ export default function Home() {
                 className="relative z-10 aspect-[4/5] overflow-hidden"
               >
                 <img 
-                  src="https://plain-weur-pro-public.komodecks.com/202605/23/86uYv0cK3Cv0YxGIVvCP/image.jpg?auto=format&fit=crop&w=1200&q=80" 
+                  src={noMoreCgpaImage} 
                   alt="NO MORE CGPA" 
                   className="w-full h-full object-cover transition-transform duration-1000 hover:scale-110"
                   loading="lazy"

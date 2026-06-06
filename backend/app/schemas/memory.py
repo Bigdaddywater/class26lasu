@@ -6,6 +6,7 @@ class MemoryBase(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     media_url: str
+    thumbnail_url: Optional[str] = None
     media_type: str = "image"
     faculty: Optional[str] = None
     tags: Optional[str] = None
