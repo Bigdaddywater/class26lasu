@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import graduationImage from '../assets/graduation.svg';
 import facultyImage from '../assets/faculty.svg';
 import noMoreCgpaImage from '../assets/noMoreCgpa.jpg';
-import echelontixImage from '../assets/echelontix.svg';
+import echelontixImage from '../assets/echelontix.jpg';
 {/*import { db } from '../services/firebase';
 import { collection, query, where, limit, onSnapshot, orderBy, getDocs } from 'firebase/firestore';*/}
 
