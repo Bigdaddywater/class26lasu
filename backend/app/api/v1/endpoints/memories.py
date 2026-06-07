@@ -54,11 +54,7 @@ async def upload_memory(
     *,
     db: AsyncSession = Depends(session.get_db),
     file: UploadFile = File(...),
-<<<<<<< HEAD
-    thumbnail: UploadFile = File(None),
-=======
     thumbnail: UploadFile | None = File(None),
->>>>>>> origin/stephen
     title: str = Form(None),
     description: str = Form(None),
     faculty: str = Form(None),

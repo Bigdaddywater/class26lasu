@@ -321,13 +321,8 @@ export default function Archive() {
         id: m.id.toString(),
         url: m.media_url,
         thumbnailUrl: m.thumbnail_url,
-<<<<<<< HEAD
-        type: m.media_type,
-        caption: m.description || m.title || '',
-=======
         type: m.media_type?.toLowerCase() === 'video' ? 'video' : 'image',
         caption: m.description || '',
->>>>>>> origin/stephen
         authorName: m.uploader_name || 'Anonymous',
         faculty: m.faculty || 'General',
         likesCount: m.likes_count || 0,
